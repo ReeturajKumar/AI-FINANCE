@@ -70,3 +70,52 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+@layer utilities{
+  .gradient {
+    @apply bg-gradient-to-br from-blue-600 to-purple-600
+  }
+
+  .gradient-title {
+    @apply gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text
+  }
+}
+
+.hero-image-wrapper{
+  perspective: 1000px;
+}
+
+.hero-image {
+  transform: rotateX(15deg) scale(1);
+  transition: transform 0.5s ease-out;
+  will-change: transform;
+}
+
+.hero-image.scrolled {
+  transform: rotateX(0deg) scale(1) translateY(40px);
+}
+
+
+/* Custom styles for the bouncing ball */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+.ball {
+  animation: bounce 2s infinite;
+}
+
+/* Blur effect for background */
+.hero-section {
+  position: relative;
+  backdrop-filter: blur(10px); /* This will apply a blur effect */
+}
