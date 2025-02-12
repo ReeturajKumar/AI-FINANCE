@@ -2,32 +2,12 @@
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
-import Image from "next/image";
 
 const HeroSection = () => {
-  const imageRef = useRef(null);
-
-  useEffect(() => {
-    const imageElement = imageRef.current;
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const scrollThreshold = 100;
-
-      if (scrollPosition > scrollThreshold) {
-        imageElement.classList.add("scrolled");
-      } else {
-        imageElement.classList.remove("scrolled");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
-    <section className="pt-40 pb-20 px-4">
-    <div className="container mx-auto text-center">
+    <section className="pt-40 pb-20 px-4 ">
+    <div className="container mx-auto text-center h-screen">
       <h1 className="text-5xl md:text-8xl lg:text-[105px] pb-6 gradient-title">
         Manage Your Finances <br /> with Intelligence
       </h1>
