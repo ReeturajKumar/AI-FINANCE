@@ -6,13 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
 import { accountSchema } from "@/app/lib/schema";
-import Input_ from "postcss/lib/input";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -22,6 +22,11 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Switch } from "../ui/switch";
+import { Button } from "../ui/button";
+import useFetch from "@/hooks/use-fetch";
+import { createAccount } from "@/actions/dashboard";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const CreateAccountDrawer = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -42,32 +47,36 @@ const CreateAccountDrawer = ({ children }) => {
     },
   });
 
-  // const {
-  //   loading: createAccountLoading,
-  //   fn: createAccountFn,
-  //   error,
-  //   data: newAccount,
-  // } = useFetch(createAccount);
+  const {
+    loading: createAccountLoading,
+    fn: createAccountFn,
+    error,
+    data: newAccount,
+  } = useFetch(createAccount);
 
-  // const onSubmit = async (data) => {
-  //   await createAccountFn(data);
-  // };
 
-  // useEffect(() => {
-  //   if (newAccount) {
-  //     toast.success("Account created successfully");
-  //     reset();
-  //     setOpen(false);
-  //   }
-  // }, [newAccount, reset]);
+  useEffect(() => {
+    if (newAccount) {
+      toast.success("Account created successfully");
+      reset();
+      setOpen(false);
+    }
+  }, [createAccountLoading, newAccount]);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(error.message || "Failed to create account");
-  //   }
-  // }, [error]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message || "Failed to create account");
+    }
+  }, [error]);
+
+  const onSubmit = async (data) => {
+    await createAccountFn(data);
+  };
+
+
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger>{children}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
@@ -75,7 +84,7 @@ const CreateAccountDrawer = ({ children }) => {
         </DrawerHeader>
 
         <div className="px-4 pb-4">
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-2">
               <label
                 htmlFor="name"
@@ -98,7 +107,7 @@ const CreateAccountDrawer = ({ children }) => {
                 htmlFor="type"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Account TYpe
+                Account Type
               </label>
               <Select
                 onValueChange={(value) => {
@@ -110,8 +119,8 @@ const CreateAccountDrawer = ({ children }) => {
                   <SelectValue placeholder="Select Account Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="light">Current</SelectItem>
-                  <SelectItem value="dark">Saving</SelectItem>
+                  <SelectItem value="CURRENT">Current</SelectItem>
+                  <SelectItem value="SAVINGS">Saving</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -120,7 +129,6 @@ const CreateAccountDrawer = ({ children }) => {
               )}
             </div>
 
-
             <div className="space-y-2">
               <label
                 htmlFor="balance"
@@ -128,7 +136,7 @@ const CreateAccountDrawer = ({ children }) => {
               >
                 Initial Balance
               </label>
-              <Input  
+              <Input
                 id="balance"
                 type="number"
                 step="0.01"
@@ -140,23 +148,46 @@ const CreateAccountDrawer = ({ children }) => {
               )}
             </div>
 
-
             <div className="flex items-center space-x-2 justify-between rounded-lg border p-3">
-             <div>
-             <label
-                htmlFor="isDefault"
-                className="text-sm font-medium cursor-pointer"
-              >
-               Set as Default
-              </label>
-              <p className="text-sm text-muted-foreground">This account will be the default account for all transactions</p>
-             </div>
-              <Switch id="isDefault"
-              onCheckedChange={(checked) => {
-                setValue("isDefault", checked);
-              }}
-              checked={watch("isDefault")}
+              <div>
+                <label
+                  htmlFor="isDefault"
+                  className="text-sm font-medium cursor-pointer"
+                >
+                  Set as Default
+                </label>
+                <p className="text-sm text-muted-foreground">
+                  This account will be the default account for all transactions
+                </p>
+              </div>
+              <Switch
+                id="isDefault"
+                onCheckedChange={(checked) => {
+                  setValue("isDefault", checked);
+                }}
+                checked={watch("isDefault")}
               />
+            </div>
+
+            <div className="flex gap-4 pt-4">
+              <DrawerClose asChild>
+                <Button type="button" variant="outline" className="flex-1">
+                  Cancel
+                </Button>
+              </DrawerClose>
+
+              <Button type="submit" className="flex-1" 
+              disabled={createAccountLoading}
+              >
+                {createAccountLoading ? (
+                 <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating....
+                 </>
+                ) : (
+                 "Create Account"
+                )}
+              </Button>
             </div>
           </form>
         </div>
