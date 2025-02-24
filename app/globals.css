@@ -119,3 +119,12 @@ body {
   position: relative;
   backdrop-filter: blur(10px); /* This will apply a blur effect */
 }
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

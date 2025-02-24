@@ -10,7 +10,7 @@ import AccountCard from "./_components/account-card";
 async function DashboardPage() {
   const account = await getUserAccounts();
   return (
-    <div className="space-y-8">
+    <div className="max-w-7xl mx-auto space-y-8">
       {/* Budget Progress */}
       {/* <BudgetProgress
         initialBudget={budgetData?.budget}
@@ -24,7 +24,7 @@ async function DashboardPage() {
       /> */}
 
       {/* Accounts Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <section className=" grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <CreateAccountDrawer>
           <Card className="hover:shadow-md transition-shadow cursor-pointer border-dashed">
             <CardContent className="flex flex-col items-center justify-center text-muted-foreground h-full pt-5">
@@ -37,7 +37,7 @@ async function DashboardPage() {
           account?.map((account) => (
             <AccountCard key={account.id} account={account} />
           ))}
-      </div>
+      </section>
     </div>
   );
 };
