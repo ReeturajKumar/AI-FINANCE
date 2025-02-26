@@ -51,9 +51,9 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
-import { useRouter } from "next/navigation";
 import { bulkDeleteTransactions } from "@/actions/accounts";
 import { categoryColors } from "@/data/category";
+import { useRouter } from "next/navigation";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -63,6 +63,7 @@ const RECURRING_INTERVALS = {
   MONTHLY: "Monthly",
   YEARLY: "Yearly",
 };
+
 
 export function TransactionTable({ transactions }) {
   const [selectedIds, setSelectedIds] = useState([]);
@@ -180,7 +181,9 @@ export function TransactionTable({ transactions }) {
 
   useEffect(() => {
     if (deleted && !deleteLoading) {
-      toast.error("Transactions deleted successfully");
+      toast.success("Transactions deleted successfully");
+      setSelectedIds([]);
+      
     }
   }, [deleted, deleteLoading]);
 

@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation';
 import React from 'react'
 import { Suspense } from 'react';
 import { TransactionTable } from '../_components/transaction-table';
-import { BarLoader } from 'react-spinners';
+import { BarLoader } from 'react-spinners'
+
 
 export default async function AccountPage({ params }) {
   const accountData = await getAccountWithTransactions(params.id);
@@ -15,7 +16,7 @@ export default async function AccountPage({ params }) {
   const { transactions, ...account } = accountData;
 
   return (
-    <div className=" space-y-8 px-5">
+    <div className="space-y-8 px-5">
       <div className="flex gap-4 items-end justify-between">
         <div>
           <h1 className="text-5xl sm:text-6xl font-bold tracking-tight gradient-title capitalize">
